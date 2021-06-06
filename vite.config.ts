@@ -8,16 +8,16 @@ const outDir = join(__dirname, 'dist/frontend')
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  publicDir,
-  base: './',
-  plugins: [vue()],
-  build: {
-    outDir,
-    emptyOutDir: true,
-  },
-  resolve: {
-    alias: {
-      '@': appDir,
-    }
-  },
+	publicDir,
+	base: './',
+	plugins: [vue()],
+	build: {
+		outDir,
+		emptyOutDir: true,
+	},
+	resolve: {
+		alias: {
+			'@': appDir,
+		},
+	},
 })
