@@ -10,7 +10,7 @@
     "build:vue": "vite build",
     "build:electron": "tsc -p tsconfig.electron.json && electron-builder",
     "clean": "node scripts/clean.js",
-    "lint": "eslint --env browser,node --ext .js,.ts --ignore-pattern \"*.d.*\" --fix scripts src ."
+    "lint": "eslint --env browser,node --ext .js,.ts,.vue --ignore-pattern \"*.d.*\" --fix scripts src index.js"
   },
   "dependencies": {
     "vue": "~3.0.11",
