@@ -1,13 +1,13 @@
 import { app, BrowserWindow } from 'electron'
-import { join } from 'path'
+import './ipc'
 
 function createWindow() {
 	const win = new BrowserWindow({
 		width: 800,
 		height: 600,
 		webPreferences: {
+			contextIsolation: false,
 			nodeIntegration: true,
-			preload: join(__dirname, 'preload.js'),
 		},
 	})
 
