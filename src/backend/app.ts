@@ -1,26 +1,16 @@
 import { app, BrowserWindow } from 'electron'
-import './ipc'
+import { AppWindow } from './util/appWindow'
 
-function createWindow() {
-	const win = new BrowserWindow({
-		width: 800,
-		height: 600,
-		webPreferences: {
-			contextIsolation: false,
-			nodeIntegration: true,
-		},
-	})
+// App components
+// ----------------------------------------
 
-	if (process.env.NODE_ENV === 'development') {
-		win.loadURL('http://localhost:3000/')
-		win.webContents.openDevTools()
-	} else {
-		win.loadFile('dist/frontend/index.html')
-	}
-}
+import './ipc/demo'
+
+// Init
+// ----------------------------------------
 
 app.on('ready', () => {
-	createWindow()
+	new AppWindow()
 })
 
 app.on('window-all-closed', () => {
@@ -31,6 +21,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
 	if (BrowserWindow.getAllWindows().length === 0) {
-		createWindow()
+		new AppWindow()
 	}
 })
