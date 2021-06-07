@@ -1,22 +1,24 @@
 import chokidar from 'chokidar'
 import { app } from 'electron'
 
-interface ReloaderOptions {
-	paths: string | string[]
-	ignored?: RegExp | RegExp[]
-}
-
+/**
+ * A utility used to close the electron app when changes are made to the source files.
+ * Closing the app will trigger the entry script to relaunch the app.
+ *
+ * @param {string | string[]} paths The file path(s) to watch.
+ * @param {RegExp[]} ignored An array of Regex patterns that should be ignored.
+ */
 export class AppReloader {
 	paths: string | string[]
 	ignoredPaths: RegExp[]
 	watcher: chokidar.FSWatcher
 
-	constructor(options: ReloaderOptions) {
-		this.paths = Array.isArray(options.paths) ? [...options.paths] : options.paths
+	constructor(paths: string | string[], ignored?: RegExp[]) {
+		this.paths = Array.isArray(paths) ? [...paths] : paths
 		this.ignoredPaths = [/(node_modules)/]
 
-		if (options.ignored) {
-			this.ignoredPaths.concat(options.ignored)
+		if (ignored) {
+			this.ignoredPaths.concat(ignored)
 		}
 
 		this.watcher = chokidar.watch(this.paths, {
@@ -28,8 +30,6 @@ export class AppReloader {
 		})
 
 		this.watcher.on('change', (path: string) => {
-			// Exit the app with code 0
-			// This will trigger the start script to relaunch the app
 			app.exit(0)
 		})
 	}

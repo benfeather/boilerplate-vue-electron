@@ -3,13 +3,20 @@ import { AppReloader } from './appReloader'
 import { Store, isDev } from '../../shared'
 import path from 'path'
 
-interface WindowData {
-	[key: string]: number | string | boolean
+export interface WindowData {
+	x?: number
+	y?: number
+	width?: number
+	height?: number
+	isMaximized?: boolean
 }
 
+/**
+ * A utility used to create and manage the main App window.
+ */
 export class AppWindow {
 	window: BrowserWindow
-	store: Store
+	store: Store<WindowData>
 
 	constructor() {
 		this.store = new Store('window-data')
@@ -31,9 +38,13 @@ export class AppWindow {
 		}
 
 		this.loadApp()
-		this.trackWindow()
+		this.trackWindowState()
 	}
 
+	/**
+	 * Load the window content.
+	 * Enables devtools and HMR for development.
+	 */
 	loadApp() {
 		const appPath = path.join(app.getAppPath(), 'src', 'backend')
 
@@ -41,7 +52,7 @@ export class AppWindow {
 			this.window.loadURL('http://localhost:3000/')
 			this.window.webContents.openDevTools()
 
-			new AppReloader({ paths: appPath })
+			new AppReloader(appPath)
 		} else {
 			this.window.loadFile('dist/frontend/index.html')
 		}
@@ -49,15 +60,23 @@ export class AppWindow {
 		this.window.show()
 	}
 
-	trackWindow() {
+	/**
+	 * Listens to various window events and saves the window state on change.
+	 */
+	trackWindowState() {
 		const events = ['maximize', 'unmaximize', 'resized', 'moved']
 
 		events.forEach((e: any) => {
-			this.window.on(e, () => this.saveState(e))
+			this.window.on(e, () => this.saveWindowState(e))
 		})
 	}
 
-	saveState(e: string) {
+	/**
+	 * Saves the current window state (size/position).
+	 *
+	 * @param {string} e The event name.
+	 */
+	saveWindowState(e: string) {
 		const bounds = this.window.getBounds()
 		const data: WindowData = {
 			isMaximized: this.window.isMaximized(),

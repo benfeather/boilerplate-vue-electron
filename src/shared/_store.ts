@@ -2,11 +2,12 @@ import electron from 'electron'
 import path from 'path'
 import fs from 'fs'
 
-interface StoreData {
-	[key: string]: any
-}
-
-export class Store {
+/**
+ * A utility used to create persistent data on the user's system.
+ *
+ * @param {string} storeName The name of the store (used for the filename).
+ */
+export class Store<StoreData extends object> {
 	private _path: string
 	private _storeData: StoreData
 
@@ -26,24 +27,41 @@ export class Store {
 		this._writeData()
 	}
 
-	get(key: string) {
+	/**
+	 * Get a value from the store data by key.
+	 *
+	 * @param {Key} key The key name.
+	 */
+	get<Key extends keyof StoreData>(key: Key): any {
 		return this._storeData[key]
 	}
 
-	set(key: string, val: any) {
+	/**
+	 * Set a value in the store data by key.
+	 *
+	 * @param {Key} key The key name.
+	 * @param {any} val The value of the store property.
+	 */
+	set<Key extends keyof StoreData>(key: Key, val: any) {
 		this._storeData[key] = val
 		this._writeData()
 	}
 
+	/**
+	 * Write the store data to disk.
+	 */
 	private _writeData() {
 		fs.writeFileSync(this._path, JSON.stringify(this._storeData))
 	}
 
+	/**
+	 * Read the store data from disk.
+	 */
 	private _readData(): StoreData {
 		try {
 			return JSON.parse(fs.readFileSync(this._path).toString())
 		} catch (error) {
-			return {}
+			return {} as StoreData
 		}
 	}
 }
