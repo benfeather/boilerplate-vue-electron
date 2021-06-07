@@ -30,8 +30,6 @@ export class AppWindow {
 			this.window.maximize()
 		}
 
-		this.window.show()
-
 		this.loadApp()
 		this.trackWindow()
 	}
@@ -47,6 +45,8 @@ export class AppWindow {
 		} else {
 			this.window.loadFile('dist/frontend/index.html')
 		}
+
+		this.window.show()
 	}
 
 	trackWindow() {
@@ -72,6 +72,7 @@ export class AppWindow {
 			data.height = bounds.height
 		}
 
+		// Combine the existing data with the new data
 		this.store.data = Object.assign(this.store.data, data)
 	}
 }
