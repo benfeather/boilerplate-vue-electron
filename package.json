@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "dist/backend/app.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development concurrently --names \"app,main\" \"npm run start:vue\" \"npm run start:electron\"",
+    "start": "concurrently --names \"app,main\" \"npm run start:vue\" \"npm run start:electron\"",
     "start:vue": "vite",
     "start:electron": "wait-on tcp:3000 && node scripts/start.js",
     "build": "npm run clean && npm run build:vue && npm run build:electron",
@@ -13,6 +13,7 @@
     "lint": "eslint --env browser,node --ext .js,.ts,.vue --ignore-pattern \"*.d.*\" --fix scripts src index.js"
   },
   "dependencies": {
+    "chokidar": "~3.5.1",
     "vue": "~3.0.11",
     "vue-router": "~3.5.1"
   },
@@ -23,9 +24,7 @@
     "@vue/compiler-sfc": "~3.0.11",
     "@vue/eslint-config-prettier": "~6.0.0",
     "@vue/eslint-config-typescript": "~7.0.0",
-    "chokidar": "~3.5.1",
     "concurrently": "~6.2.0",
-    "cross-env": "~7.0.3",
     "electron": "~13.1.1",
     "electron-builder": "~22.10.5",
     "eslint": "~7.28.0",

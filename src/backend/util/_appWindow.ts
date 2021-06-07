@@ -1,6 +1,5 @@
 import { app, BrowserWindow } from 'electron'
-import { AppReloader } from './appReloader'
-import { Store, isDev } from '../../shared'
+import { AppReloader, Store, isProd } from '.'
 import path from 'path'
 
 export interface WindowData {
@@ -46,22 +45,24 @@ export class AppWindow {
 	 * Enables devtools and HMR for development.
 	 */
 	loadApp() {
-		const appPath = path.join(app.getAppPath(), 'src', 'backend')
+		if (isProd()) {
+			const appPath = path.join(app.getAppPath(), 'dist', 'frontend', 'index.html')
 
-		if (isDev()) {
+			this.window.loadFile(appPath)
+		} else {
+			const appPath = path.join(app.getAppPath(), 'src', 'backend')
+
 			this.window.loadURL('http://localhost:3000/')
 			this.window.webContents.openDevTools()
 
 			new AppReloader(appPath)
-		} else {
-			this.window.loadFile('dist/frontend/index.html')
 		}
 
 		this.window.show()
 	}
 
 	/**
-	 * Listens to various window events and saves the window state on change.
+	 * Listen to various window events and save the window state on change.
 	 */
 	trackWindowState() {
 		const events = ['maximize', 'unmaximize', 'resized', 'moved']
@@ -72,7 +73,7 @@ export class AppWindow {
 	}
 
 	/**
-	 * Saves the current window state (size/position).
+	 * Save the current window state (size/position).
 	 *
 	 * @param {string} e The event name.
 	 */

@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from 'electron'
-import { AppWindow } from './util/appWindow'
+import { AppWindow } from './util'
 
 // App components
 // ----------------------------------------

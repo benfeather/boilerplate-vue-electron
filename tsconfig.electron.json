@@ -9,5 +9,5 @@
     "allowJs": true,
     "outDir": "dist/backend"
   },
-  "include": ["src/backend/app.ts", "src/backend/preload.js"]
+  "include": ["src/backend/app.ts"]
 }
