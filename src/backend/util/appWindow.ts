@@ -3,6 +3,10 @@ import { AppReloader } from './appReloader'
 import { Store, isDev } from '../../shared'
 import path from 'path'
 
+interface WindowData {
+	[key: string]: number | string | boolean
+}
+
 export class AppWindow {
 	window: BrowserWindow
 	store: Store
@@ -11,16 +15,22 @@ export class AppWindow {
 		this.store = new Store('window-data')
 
 		this.window = new BrowserWindow({
+			show: false,
 			x: this.store.data.x || undefined,
 			y: this.store.data.y || undefined,
 			width: this.store.data.width || 1280,
 			height: this.store.data.height || 720,
-			center: this.store.data.center || true,
 			webPreferences: {
 				contextIsolation: false,
 				nodeIntegration: true,
 			},
 		})
+
+		if (this.store.data.isMaximized) {
+			this.window.maximize()
+		}
+
+		this.window.show()
 
 		this.loadApp()
 		this.trackWindow()
@@ -40,20 +50,28 @@ export class AppWindow {
 	}
 
 	trackWindow() {
-		this.window.on('resize', () => this.saveState())
-		this.window.on('close', () => this.saveState())
-		this.window.on('move', () => this.saveState())
+		const events = ['maximize', 'unmaximize', 'resized', 'moved']
+
+		events.forEach((e: any) => {
+			this.window.on(e, () => this.saveState(e))
+		})
 	}
 
-	saveState() {
+	saveState(e: string) {
 		const bounds = this.window.getBounds()
-
-		this.store.data = {
-			x: bounds.x,
-			y: bounds.y,
-			width: bounds.width,
-			height: bounds.height,
-			center: false,
+		const data: WindowData = {
+			isMaximized: this.window.isMaximized(),
 		}
+
+		// Only update the bounds if the window is moved or resized
+		// This keeps the original bounds intact when the window is maximized/unmaximized
+		if (e === 'resized' || e === 'moved') {
+			data.x = bounds.x
+			data.y = bounds.y
+			data.width = bounds.width
+			data.height = bounds.height
+		}
+
+		this.store.data = Object.assign(this.store.data, data)
 	}
 }
