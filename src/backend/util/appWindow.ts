@@ -1,34 +1,59 @@
 import { app, BrowserWindow } from 'electron'
 import { AppReloader } from './appReloader'
-import path = require('path')
-
+import { Store } from '../../shared/store'
+import path from 'path'
 export class AppWindow {
-	win: BrowserWindow
-	frontendSrc: string
-	backendSrc: string
-	isDev: boolean
+	window: BrowserWindow
+	store: Store
 
 	constructor() {
-		this.win = new BrowserWindow({
-			width: 800,
-			height: 600,
+		this.store = new Store('window-data')
+
+		this.window = new BrowserWindow({
+			x: this.store.data.x || undefined,
+			y: this.store.data.y || undefined,
+			width: this.store.data.width || 1280,
+			height: this.store.data.height || 720,
+			center: this.store.data.center || true,
 			webPreferences: {
 				contextIsolation: false,
 				nodeIntegration: true,
 			},
 		})
 
-		this.frontendSrc = path.join(app.getAppPath(), 'src', 'frontend')
-		this.backendSrc = path.join(app.getAppPath(), 'src', 'backend')
-		this.isDev = process.env.NODE_ENV === 'development'
+		this.loadApp()
+		this.trackWindow()
+	}
 
-		if (this.isDev) {
-			this.win.loadURL('http://localhost:3000/')
-			this.win.webContents.openDevTools()
+	loadApp() {
+		const isDev = process.env.NODE_ENV !== 'production'
+		const appPath = path.join(app.getAppPath(), 'src', 'backend')
 
-			new AppReloader({ paths: this.backendSrc })
+		if (isDev) {
+			this.window.loadURL('http://localhost:3000/')
+			this.window.webContents.openDevTools()
+
+			new AppReloader({ paths: appPath })
 		} else {
-			this.win.loadFile('dist/frontend/index.html')
+			this.window.loadFile('dist/frontend/index.html')
+		}
+	}
+
+	trackWindow() {
+		this.window.on('resize', () => this.saveState())
+		this.window.on('close', () => this.saveState())
+		this.window.on('move', () => this.saveState())
+	}
+
+	saveState() {
+		const bounds = this.window.getBounds()
+
+		this.store.data = {
+			x: bounds.x,
+			y: bounds.y,
+			width: bounds.width,
+			height: bounds.height,
+			center: false,
 		}
 	}
 }
