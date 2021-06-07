@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron'
 import { AppReloader } from './appReloader'
 import { Store, isDev } from '../../shared'
 import path from 'path'
+
 export class AppWindow {
 	window: BrowserWindow
 	store: Store
