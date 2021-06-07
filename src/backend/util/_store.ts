@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 
 /**
- * A utility used to create persistent data on the user's system.
+ * A utility used to store persistent data on the user's system.
  *
  * @param {string} storeName The name of the store (used for the filename).
  */
