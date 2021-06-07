@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron'
 import { AppReloader } from './appReloader'
-import { Store } from '../../shared/store'
+import { Store, isDev } from '../../shared'
 import path from 'path'
 export class AppWindow {
 	window: BrowserWindow
@@ -26,10 +26,9 @@ export class AppWindow {
 	}
 
 	loadApp() {
-		const isDev = process.env.NODE_ENV !== 'production'
 		const appPath = path.join(app.getAppPath(), 'src', 'backend')
 
-		if (isDev) {
+		if (isDev()) {
 			this.window.loadURL('http://localhost:3000/')
 			this.window.webContents.openDevTools()
 
