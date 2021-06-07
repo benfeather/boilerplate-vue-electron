@@ -1,7 +1,7 @@
 import chokidar from 'chokidar'
 import { app } from 'electron'
 
-interface IReloaderOptions {
+interface ReloaderOptions {
 	paths: string | string[]
 	ignored?: RegExp | RegExp[]
 }
@@ -11,7 +11,7 @@ export class AppReloader {
 	ignoredPaths: RegExp[]
 	watcher: chokidar.FSWatcher
 
-	constructor(options: IReloaderOptions) {
+	constructor(options: ReloaderOptions) {
 		this.paths = Array.isArray(options.paths) ? [...options.paths] : options.paths
 		this.ignoredPaths = [/(node_modules)/]
 
@@ -28,8 +28,9 @@ export class AppReloader {
 		})
 
 		this.watcher.on('change', (path: string) => {
-			app.relaunch()
-			app.exit()
+			// Exit the app with code 0
+			// This will trigger the start script to relaunch the app
+			app.exit(0)
 		})
 	}
 }
