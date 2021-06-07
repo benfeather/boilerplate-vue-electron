@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "main": "dist/backend/app.js",
   "scripts": {
-    "start": "concurrently --names \"app,main\" \"npm run start:vue\" \"npm run start:electron\"",
+    "start": "concurrently --kill-others-on-fail --names app,main \"npm:start:vue\" \"npm:start:electron\"",
     "start:vue": "vite",
     "start:electron": "wait-on tcp:3000 && node scripts/start.js",
     "build": "npm run clean && npm run build:vue && npm run build:electron",
