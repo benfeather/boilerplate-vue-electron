@@ -83,8 +83,8 @@ export class AppWindow {
 			isMaximized: this.window.isMaximized(),
 		}
 
-		// Only update the bounds if the window is moved or resized
-		// This keeps the original bounds intact when the window is maximized/unmaximized
+		// Only update the bounds if the window is moved or resized.
+		// This keeps the original bounds intact when the window is maximized/unmaximized.
 		if (e === 'resized' || e === 'moved') {
 			data.x = bounds.x
 			data.y = bounds.y

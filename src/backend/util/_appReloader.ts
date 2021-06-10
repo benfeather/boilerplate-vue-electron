@@ -30,7 +30,7 @@ export class AppReloader {
 		})
 
 		this.watcher.on('change', (path: string) => {
-			app.exit(0)
+			app.exit(200) // Exit with a custom exit code (to trigger restart)
 		})
 	}
 }

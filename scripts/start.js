@@ -1,27 +1,28 @@
-const cp = require('child_process')
-const path = require('path')
-const proc = require('process')
+// bootstrap.js
+const concurrently = require('concurrently')
 
-;(function start() {
-	const electron = path.resolve('node_modules/.bin/electron')
-	const electronProc = cp.exec(`${electron} index.js`)
+const cmd = [
+	{ command: 'npm:start-vue', name: 'app' },
+	{ command: 'npm:start-electron', name: 'main' },
+]
 
-	// Reroute stdout to the main process
-	electronProc.stdout.on('data', function (data) {
-		proc.stdout.write(data.toString())
-	})
+const options = {
+	prefix: 'name',
+	killOthers: ['failure', 'success'],
+	restartTries: 0,
+}
 
-	// Reroute stderr to the main process
-	electronProc.stderr.on('data', function (data) {
-		proc.stderr.write(data.toString())
-	})
+concurrently(cmd, options)
 
-	// Restart the app if it exits with code 0
-	electronProc.on('exit', function (code) {
-		if (code !== 0) return
-
-		proc.stdout.write(`child process exited with code ${code}, restarting...`)
-
-		start()
-	})
-})()
+// .then(
+// 	function onSuccess(exitInfo) {
+// 		// This code is necessary to make sure the parent terminates
+// 		// when the application is closed successfully.
+// 		process.exit()
+// 	},
+// 	function onFailure(exitInfo) {
+// 		// This code is necessary to make sure the parent terminates
+// 		// when the application is closed because of a failure.
+// 		process.exit()
+// 	}
+// )

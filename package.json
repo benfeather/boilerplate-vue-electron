@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "main": "dist/backend/app.js",
   "scripts": {
-    "start": "concurrently --kill-others-on-fail --names app,main \"npm:start:vue\" \"npm:start:electron\"",
-    "start:vue": "vite",
-    "start:electron": "wait-on tcp:3000 && node scripts/start.js",
-    "build": "npm run clean && npm run build:vue && npm run build:electron",
-    "build:vue": "vite build",
-    "build:electron": "tsc -p tsconfig.electron.json && electron-builder",
+    "start": "node scripts/start.js",
+    "start-vue": "vite",
+    "start-electron": "wait-on tcp:3000 && node scripts/electron.js",
+    "build": "npm run clean && npm run build-vue && npm run build-electron",
+    "build-vue": "vite build",
+    "build-electron": "tsc -p tsconfig.electron.json && electron-builder",
     "clean": "node scripts/clean.js",
     "lint": "eslint --env browser,node --ext .js,.ts,.vue --ignore-pattern \"*.d.*\" --fix scripts src index.js"
   },
