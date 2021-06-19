@@ -5,7 +5,7 @@ An opinionated boilerplate for developing cross-platform, desktop applications w
 ## Features
 
 -   Typescript & Sass
--   Eslint configured with Prettier
+-   Eslint & Prettier
 -   Persistent window state
 -   Automatic app reload
 -   Vite HMR
