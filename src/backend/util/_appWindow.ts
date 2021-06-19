@@ -20,7 +20,7 @@ export interface WindowData {
 }
 
 /**
- * A utility used to create and manage the App windows.
+ * A utility for creating and managing the App windows.
  */
 export class AppWindow {
 	window: BrowserWindow
