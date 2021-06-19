@@ -1,26 +1,51 @@
-# Vite Electron Typescript Template
+# Vite + Vue + Electron = 🔥
 
-`vite 2` `vue 3` `electron 12`
+An opinionated boilerplate for cross-platform, desktop applications harnessing the power of Vue, Vite and Electron!
 
-## How to use
-clone the repo via git and install dependencies:
-```shell
-git clone --depth 1 --single-branch https://github.com/hocili/vite-electron-typescript-template.git your-project-name
-cd your-project-name
-yarn
+## Features
+
+-   Typescript (Vue and Electron)
+-   Eslint configured with Prettier
+-   Persistent window state
+-   Automatic app reload
+-   Vite HMR
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/benfeather/boilerplate-vue-electron.git my-project
 ```
 
-## Starting Development
-Start the app in the `dev` environment:
-```shell
-yarn dev
+Go to the project directory
+
+```bash
+  cd my-project
 ```
 
-```shell
-yarn electron:dev
+Install dependencies
+
+```bash
+  npm install
 ```
-## Packaging for Production
-To package apps for the local platform:
-```shell
-yarn electron:build
+
+Start the app
+
+```bash
+  npm start
 ```
+
+## Production
+
+To build this project run
+
+```bash
+  npm run build
+```
+
+You can update the build targets and settings in `package.json`.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
