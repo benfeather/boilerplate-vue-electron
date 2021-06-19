@@ -1,6 +1,6 @@
 # Vite + Vue + Electron = 🔥
 
-An opinionated boilerplate for cross-platform, desktop applications harnessing the power of Vite, Vue and Electron!
+An opinionated boilerplate for developing cross-platform, desktop applications with the power of Vite, Vue and Electron!
 
 ## Features
 
