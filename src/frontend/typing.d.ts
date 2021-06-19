@@ -1,6 +1,6 @@
 export {}
 
-declare var window: Window
+declare let window: Window
 
 declare global {
 	interface Window {

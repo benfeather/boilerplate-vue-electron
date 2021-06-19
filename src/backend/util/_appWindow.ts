@@ -1,6 +1,15 @@
-import { app, BrowserWindow } from 'electron'
-import { AppReloader, Store, isProd } from '.'
-import path from 'path'
+import { BrowserWindow } from 'electron'
+import { Store, isDev } from '.'
+
+export interface WindowConfig {
+	id: string
+	width: number
+	height: number
+	file?: string
+	url?: string
+	saveState?: boolean
+	devtools?: boolean
+}
 
 export interface WindowData {
 	x?: number
@@ -11,21 +20,21 @@ export interface WindowData {
 }
 
 /**
- * A utility used to create and manage the main App window.
+ * A utility used to create and manage the App windows.
  */
 export class AppWindow {
 	window: BrowserWindow
 	store: Store<WindowData>
 
-	constructor() {
-		this.store = new Store('window-data')
+	constructor(config: WindowConfig) {
+		this.store = new Store(`win-data_${config.id}`)
 
 		this.window = new BrowserWindow({
 			show: false,
 			x: this.store.data.x || undefined,
 			y: this.store.data.y || undefined,
-			width: this.store.data.width || 1280,
-			height: this.store.data.height || 720,
+			width: this.store.data.width || config.width,
+			height: this.store.data.height || config.height,
 			webPreferences: {
 				contextIsolation: false,
 				nodeIntegration: true,
@@ -36,26 +45,20 @@ export class AppWindow {
 			this.window.maximize()
 		}
 
-		this.loadApp()
-		this.trackWindowState()
-	}
+		if (config.saveState) {
+			this.trackWindowState()
+		}
 
-	/**
-	 * Load the window content.
-	 * Enables devtools and HMR for development.
-	 */
-	loadApp() {
-		if (isProd()) {
-			const appPath = path.join(app.getAppPath(), 'dist', 'frontend', 'index.html')
-
-			this.window.loadFile(appPath)
-		} else {
-			const appPath = path.join(app.getAppPath(), 'src', 'backend')
-
-			this.window.loadURL('http://localhost:3000/')
+		if (config.devtools && isDev()) {
 			this.window.webContents.openDevTools()
+		}
 
-			new AppReloader(appPath)
+		if (config.file) {
+			this.window.loadFile(config.file)
+		}
+
+		if (config.url) {
+			this.window.loadURL(config.url)
 		}
 
 		this.window.show()
