@@ -2,7 +2,7 @@ import { join } from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-const publicDir = join(__dirname, 'public')
+const publicDir = join(__dirname, 'src/public')
 const appDir = join(__dirname, 'src/frontend')
 const outDir = join(__dirname, 'dist/frontend')
 
@@ -10,6 +10,7 @@ const outDir = join(__dirname, 'dist/frontend')
 export default defineConfig({
 	publicDir,
 	base: './',
+	root: './src',
 	plugins: [vue()],
 	build: {
 		outDir,

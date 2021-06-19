@@ -6,7 +6,7 @@ const cmd = [
 		name: 'frontend',
 	},
 	{
-		command: 'nodemon --ext ts --watch src/backend/* --exec "electron ."',
+		command: 'nodemon --ext ts --watch src/backend/* --exec "electron src"',
 		name: 'backend',
 	},
 ]
