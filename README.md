@@ -4,7 +4,7 @@ An opinionated boilerplate for developing cross-platform, desktop applications w
 
 ## Features
 
--   Typescript (Vue and Electron)
+-   Typescript & Sass
 -   Eslint configured with Prettier
 -   Persistent window state
 -   Automatic app reload
