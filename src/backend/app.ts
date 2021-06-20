@@ -1,16 +1,16 @@
 import path from 'path'
-import { app, BrowserWindow } from 'electron'
-import { AppWindow, isProd, WindowConfig } from './util'
+import { app, BrowserWindow, Menu } from 'electron'
+import { AppWindow, isProd, isMac, menu, WindowConfig } from './common'
 
 // App components
 // ----------------------------------------
 
 import './ipc/demo'
 
-// Init
+// Config
 // ----------------------------------------
 
-const config: WindowConfig = {
+const windowConfig: WindowConfig = {
 	id: 'main',
 	width: 1280,
 	height: 720,
@@ -18,25 +18,30 @@ const config: WindowConfig = {
 }
 
 if (isProd()) {
-	config.file = path.join(app.getAppPath(), 'dist', 'frontend', 'index.html')
-	config.devtools = false
+	windowConfig.file = path.join(app.getAppPath(), 'dist', 'frontend', 'index.html')
+	windowConfig.devtools = false
 } else {
-	config.url = 'http://localhost:3000/'
-	config.devtools = true
+	windowConfig.url = 'http://localhost:3000/'
+	windowConfig.devtools = true
 }
 
+// Init
+// ----------------------------------------
+
+Menu.setApplicationMenu(menu)
+
 app.on('ready', () => {
-	new AppWindow(config)
+	new AppWindow(windowConfig)
 })
 
 app.on('activate', () => {
-	if (BrowserWindow.getAllWindows().length === 0) {
-		new AppWindow(config)
-	}
+	if (BrowserWindow.getAllWindows().length > 0) return
+
+	new AppWindow(windowConfig)
 })
 
 app.on('window-all-closed', () => {
-	if (process.platform !== 'darwin') {
-		app.quit()
-	}
+	if (isMac()) return
+
+	app.quit()
 })
