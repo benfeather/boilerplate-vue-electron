@@ -1,29 +1,25 @@
 <template>
-	<img alt="Vue logo" src="./assets/logo.png" />
-	<HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+	<Nav />
+	<router-view></router-view>
 </template>
 
 <script lang="ts">
 	import { defineComponent } from 'vue'
-	import HelloWorld from './components/HelloWorld.vue'
+	import Nav from './components/Nav.vue'
 
 	export default defineComponent({
 		name: 'App',
 		components: {
-			HelloWorld,
+			Nav,
 		},
 	})
 </script>
 
 <style lang="scss">
-	$color: #2c3e50;
+	@import 'assets/scss/index';
 
 	#app {
-		font-family: Avenir, Helvetica, Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
+		padding: 60px 20px;
 		text-align: center;
-		color: $color;
-		margin-top: 60px;
 	}
 </style>

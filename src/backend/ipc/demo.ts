@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron'
 
-ipcMain.on('asynchronous-message', (event, arg) => {
+ipcMain.on('message', (event, arg) => {
 	console.log(arg) // prints "ping"
-	event.reply('asynchronous-reply', 'pong')
+	event.reply('reply', 'pong')
 })
